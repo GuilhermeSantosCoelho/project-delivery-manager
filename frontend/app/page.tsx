@@ -1,5 +1,6 @@
 import { Header } from './components/Header';
 import { ProjectsList } from './components/ProjectsList';
+import { TasksList } from './components/TasksList';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
@@ -64,6 +65,14 @@ export default async function HomePage() {
             Projects
           </h2>
           <ProjectsList />
+        </section>
+
+        {/* Tasks — fetched client-side via TanStack Query */}
+        <section>
+          <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-zinc-500">
+            Tasks
+          </h2>
+          <TasksList />
         </section>
 
         {/* Upcoming / overdue tasks */}
