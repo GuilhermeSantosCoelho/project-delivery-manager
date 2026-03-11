@@ -39,7 +39,7 @@ const statusStyles: Record<Project['status'], string> = {
 export default async function HomePage() {
   const [summary, projects, tasks] = await Promise.all([
     fetchJson<DashboardSummary>('/dashboard/summary'),
-    fetchJson<Project[]>('/dashboard/projects'),
+    fetchJson<Project[]>('/projects'),
     fetchJson<UpcomingTask[]>('/dashboard/tasks/upcoming'),
   ]);
 
