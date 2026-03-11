@@ -47,7 +47,7 @@ If the user has not set up Linear auth or project/team IDs, ask for:
 - If the task **has no description** (or it’s empty/whitespace):
   - **Fill the description** in Linear via the API (e.g. `issueUpdate` mutation, `description` field).
   - Base the text on: title, any acceptance criteria, and the intended scope (backend + frontend). Keep it concise and actionable.
-- If the task **already has a description**, verify if it's a good description. If not, fill the description with the all necessary information to build the task.
+- If the task **already has a description**, improve the description with all things that is necessary to build the task.
 
 ---
 
