@@ -1,3 +1,4 @@
+import { Project } from '@/hooks/useProjects';
 import { ProjectsList } from './components/ProjectsList';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
@@ -27,8 +28,9 @@ async function fetchJson<T>(path: string): Promise<T | null> {
 }
 
 export default async function HomePage() {
-  const [summary, tasks] = await Promise.all([
+  const [summary, projects, tasks] = await Promise.all([
     fetchJson<DashboardSummary>('/dashboard/summary'),
+    fetchJson<Project[]>('/projects'),
     fetchJson<UpcomingTask[]>('/dashboard/tasks/upcoming'),
   ]);
 
