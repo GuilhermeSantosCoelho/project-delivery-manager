@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 import { useProjects } from '@/hooks/useProjects';
 
 const statusStyles: Record<string, string> = {
@@ -41,18 +43,23 @@ export function ProjectsList() {
     <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
       <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
         {projects.map((project) => (
-          <li
-            key={project.id}
-            className="flex items-center justify-between px-5 py-4"
-          >
-            <span className="font-medium text-zinc-800 dark:text-zinc-100">
-              {project.name}
-            </span>
-            <span
-              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[project.status] ?? 'bg-zinc-100 text-zinc-500'}`}
+          <li key={project.id}>
+            <Link
+              href={`/projects/${project.id}`}
+              className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
             >
-              {statusLabel(project.status)}
-            </span>
+              <span className="font-medium text-zinc-800 dark:text-zinc-100">
+                {project.name}
+              </span>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[project.status] ?? 'bg-zinc-100 text-zinc-500'}`}
+                >
+                  {statusLabel(project.status)}
+                </span>
+                <ChevronRight size={16} className="text-zinc-400" />
+              </div>
+            </Link>
           </li>
         ))}
       </ul>

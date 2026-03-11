@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './project.entity';
+import { ProjectTask } from '../tasks/task.entity';
 import { ProjectsService } from './projects.service';
 
 @Controller('projects')
@@ -10,6 +11,11 @@ export class ProjectsController {
   @Get()
   findAll(): Promise<Project[]> {
     return this.projectsService.findAll();
+  }
+
+  @Get(':id/tasks')
+  findTasks(@Param('id') id: string): Promise<ProjectTask[]> {
+    return this.projectsService.findTasksByProject(id);
   }
 
   @Post()
