@@ -1,10 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+import { ProjectsList } from './components/ProjectsList';
 
-interface Project {
-  id: string;
-  name: string;
-  status: 'active' | 'at-risk' | 'completed';
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
 interface UpcomingTask {
   id: string;
@@ -30,16 +26,9 @@ async function fetchJson<T>(path: string): Promise<T | null> {
   }
 }
 
-const statusStyles: Record<Project['status'], string> = {
-  active: 'bg-emerald-100 text-emerald-700',
-  'at-risk': 'bg-amber-100 text-amber-700',
-  completed: 'bg-zinc-100 text-zinc-500',
-};
-
 export default async function HomePage() {
-  const [summary, projects, tasks] = await Promise.all([
+  const [summary, tasks] = await Promise.all([
     fetchJson<DashboardSummary>('/dashboard/summary'),
-    fetchJson<Project[]>('/dashboard/projects'),
     fetchJson<UpcomingTask[]>('/dashboard/tasks/upcoming'),
   ]);
 
@@ -88,36 +77,12 @@ export default async function HomePage() {
           )}
         </section>
 
-        {/* Active projects */}
+        {/* Projects — fetched client-side via TanStack Query */}
         <section>
           <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-zinc-500">
-            Active Projects
+            Projects
           </h2>
-          {projects && projects.length > 0 ? (
-            <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-              <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                {projects.map((project) => (
-                  <li
-                    key={project.id}
-                    className="flex items-center justify-between px-5 py-4"
-                  >
-                    <span className="font-medium text-zinc-800 dark:text-zinc-100">
-                      {project.name}
-                    </span>
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[project.status]}`}
-                    >
-                      {project.status === 'at-risk' ? 'At Risk' : project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="text-sm text-zinc-400">
-              {projects === null ? 'Unable to load projects.' : 'No active projects.'}
-            </p>
-          )}
+          <ProjectsList />
         </section>
 
         {/* Upcoming / overdue tasks */}
