@@ -1,4 +1,4 @@
-import { Project } from '@/hooks/useProjects';
+import { Header } from './components/Header';
 import { ProjectsList } from './components/ProjectsList';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
@@ -28,35 +28,14 @@ async function fetchJson<T>(path: string): Promise<T | null> {
 }
 
 export default async function HomePage() {
-  const [summary, projects, tasks] = await Promise.all([
+  const [summary, tasks] = await Promise.all([
     fetchJson<DashboardSummary>('/dashboard/summary'),
-    fetchJson<Project[]>('/projects'),
     fetchJson<UpcomingTask[]>('/dashboard/tasks/upcoming'),
   ]);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <header className="border-b border-zinc-200 bg-white px-6 py-4 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-            Project Delivery Manager
-          </h1>
-          <div className="flex gap-3">
-            <a
-              href="/projects/new"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
-              + New Project
-            </a>
-            <a
-              href="/tasks/new"
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            >
-              + New Task
-            </a>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="mx-auto max-w-5xl space-y-8 px-6 py-8">
         {/* Summary metrics */}
