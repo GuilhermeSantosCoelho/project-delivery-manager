@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { NewProjectModal } from './NewProjectModal';
+import { NewTaskModal } from './NewTaskModal';
 
 export function Header() {
-  const [showModal, setShowModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
 
   return (
     <>
@@ -15,22 +17,27 @@ export function Header() {
           </h1>
           <div className="flex gap-3">
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowProjectModal(true)}
               className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               + New Project
             </button>
-            <a
-              href="/tasks/new"
+            <button
+              onClick={() => setShowTaskModal(true)}
               className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
               + New Task
-            </a>
+            </button>
           </div>
         </div>
       </header>
 
-      {showModal && <NewProjectModal onClose={() => setShowModal(false)} />}
+      {showProjectModal && (
+        <NewProjectModal onClose={() => setShowProjectModal(false)} />
+      )}
+      {showTaskModal && (
+        <NewTaskModal onClose={() => setShowTaskModal(false)} />
+      )}
     </>
   );
 }
