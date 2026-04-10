@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useTasks, Task } from '@/hooks/useTasks';
+import { useDeleteTask } from '@/hooks/useDeleteTask';
 import { EditTaskModal } from './EditTaskModal';
 
 const statusStyles: Record<string, string> = {
@@ -20,6 +21,13 @@ function statusLabel(status: string) {
 export function TasksList() {
   const { data: tasks, isLoading, isError } = useTasks();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const { mutate: deleteTask } = useDeleteTask();
+
+  function handleDelete(task: Task) {
+    if (window.confirm(`Delete "${task.title}"?`)) {
+      deleteTask(task.id);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -77,13 +85,22 @@ export function TasksList() {
                   {task.dueDate ?? '—'}
                 </td>
                 <td className="px-5 py-3 text-right">
-                  <button
-                    onClick={() => setEditingTask(task)}
-                    className="rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
-                    aria-label="Edit task"
-                  >
-                    <Pencil size={15} />
-                  </button>
+                  <div className="flex items-center justify-end gap-1">
+                    <button
+                      onClick={() => setEditingTask(task)}
+                      className="rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                      aria-label="Edit task"
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task)}
+                      className="rounded-md p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950 dark:hover:text-red-400"
+                      aria-label="Delete task"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

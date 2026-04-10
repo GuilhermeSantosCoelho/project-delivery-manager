@@ -36,4 +36,10 @@ export class TasksService {
     if (dto.status !== undefined) task.status = dto.status;
     return this.tasksRepository.save(task);
   }
+
+  async remove(id: string): Promise<void> {
+    const task = await this.tasksRepository.findOne({ where: { id } });
+    if (!task) throw new NotFoundException(`Task ${id} not found`);
+    await this.tasksRepository.remove(task);
+  }
 }
